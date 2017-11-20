@@ -20,10 +20,10 @@ install:
   - echo -e '[defaults]\nroles_path = ../\nhostfile = ./tests/inventory' > ansible.cfg
 
 script:
-  - ansible-playbook --syntax-check tests/role.yml
-  - ansible-playbook -v --diff tests/role.yml
+  - ansible-playbook --syntax-check tests/test.yml
+  - ansible-playbook -v --diff tests/test.yml
   - >
-    ansible-playbook tests/role.yml
+    ansible-playbook tests/test.yml
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
