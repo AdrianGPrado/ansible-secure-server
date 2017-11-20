@@ -1,0 +1,38 @@
+#
+# SSH is the secure way to conect to a server but it can
+# be configure in a more secure way than the default 
+# configuration
+#
+# New SSH configuration
+#   - Disable root access.
+#   - Disable password access.
+#
+# TODO Create template file for more advanvanced options.
+#
+---
+
+- name: disable root SSH logins
+  replace:
+    destfile: /etc/ssh/sshd_config
+    regexp: "^.*PermitRootLogin.*"
+    replace: "PermitRootLogin no"
+    backup: yes
+
+- name: disable SSH logins by password
+  replace:
+    destfile: /etc/ssh/sshd_config
+    regexp: "^.*PasswordAuthentication yes"
+    replace: "PasswordAuthentication no"
+    backup: yes
+
+- name: disable SSH logins by password
+  replace:
+    destfile: /etc/ssh/sshd_config
+    regexp: "^.*MaxSessions.*"
+    replace: "MaxSessions 2"
+    backup: yes
+
+- name: restart SSH service
+  service:
+    name: ssh
+    state: restarted

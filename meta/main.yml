@@ -7,8 +7,7 @@ galaxy_info:
   # issue_tracker_url: http://example.com/issue/tracker
 
   # Some suggested licenses:
-  - BSD (default)
-  license: license (GPLv2, CC-BY, etc)
+  license: license (BSD, MIT)
 
   min_ansible_version: 1.2
 
@@ -31,7 +30,7 @@ galaxy_info:
     versions:
     - all
 
-  galaxy_tags: []
+  galaxy_tags:
     - server
     - security
     - ssh
