@@ -1,5 +1,11 @@
 ---
-- hosts: localhost
-  remote_user: root
+- hosts: all
+  become: true
   roles:
     - ansible-secure-server
+  vars:
+    gitlab_ports:
+      deploy_group: test_group
+      deploy_user: test_user
+      ssh_dir: "./"
+      ssh_key_name: insecure_key

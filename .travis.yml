@@ -1,30 +1,32 @@
----
 language: python
-python: "3.6"
+python:
+  - "3.6"
 
-# Use the new container infrastructure
-sudo: false
+services:
+  - docker
 
-# Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+git:
+  depth: 3
+
+before_install:
+  - sudo -H apt-get update -qq
+  - sudo -H apt-get install -qq python-apt python-pycurl
 
 install:
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - sudo -H pip install http://releases.ansible.com/ansible/ansible-2.2.1.0.tar.gz
+  - sudo -H pip install docker-py==1.10.6
+  - sudo -H pip install netaddr==0.7.19
+  - echo -e 'localhost  ansible_connection=local' > tests/inventory
+  - echo -e '[defaults]\nroles_path = ../\nhostfile = ./tests/inventory' > ansible.cfg
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - ansible-playbook --syntax-check tests/role.yml
+  - ansible-playbook -v --diff tests/role.yml
+  - >
+    ansible-playbook tests/role.yml
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
-
