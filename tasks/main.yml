@@ -1,2 +1,9 @@
 ---
-# tasks file for ansible-secure-server
+- name: Update
+  apt:
+    update_cache: yes
+    upgrade: full
+
+- import_tasks: config_user.yaml
+- import_tasks: config_ssh.yaml
+- import_tasks: config_ufw.yaml

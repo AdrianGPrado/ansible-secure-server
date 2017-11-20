@@ -1,0 +1,35 @@
+#
+# The firewall should deny all connections by default.
+# The specific applications will open the specific port.
+#
+# WARNING:
+# If you run this script after an application has been 
+# deployed, you might close the ports needed by that app. 
+#
+---
+
+- name: Allow OpenSSH traffic
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Protecting against brute-force login attacks
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: Deny all incoming traffic
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: Allow all outgoing traffic
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: enable the firewall itself
+  ufw: 
+    state: enabled
+  become: true
